@@ -75,7 +75,7 @@ ament_target_dependencies(${EXECUTABLE_NAME} ${DEPENDENCIES})
 ################################################################################
 # Install
 ################################################################################
-install(DIRECTORY param launch
+install(DIRECTORY param
   DESTINATION share/${PROJECT_NAME}
 )
 
