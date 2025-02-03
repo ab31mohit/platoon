@@ -1,3 +1,21 @@
+#!/usr/bin/env python3
+#
+# Copyright 2019 ROBOTIS CO., LTD.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Authors: Darby Lim
+
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -13,27 +31,30 @@ from launch_ros.actions import Node
 def generate_launch_description():
     TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
     LDS_MODEL = os.environ['LDS_MODEL']
-    ROBOT_NAMESPACE = os.environ.get('TURTLEBOT3_NAMESPACE', 'default_ns')  # Default to 'default_ns' if not set
-
-    try:
-        if LDS_MODEL == 'LDS-02':
-            LDS_LAUNCH_FILE = '/robot_ld08.launch.py'
-    except:
-        print('Please make sure you have correct LDS_MODEL (LDS-02)!')
+    LDS_LAUNCH_FILE = '/hlds_laser.launch.py'
 
     usb_port = LaunchConfiguration('usb_port', default='/dev/ttyACM0')
-
-    if ROBOT_NAMESPACE != 'default_ns':
-        print(f'Using user defined namespace : {ROBOT_NAMESPACE}')
-    else:
-        print('Using default namespace : default_ns')
 
     tb3_param_dir = LaunchConfiguration(
         'tb3_param_dir',
         default=os.path.join(
-            get_package_share_directory('robot_bringup'),  # <--- CHANGE THIS to your desired bringup package name!
+            get_package_share_directory('updated_turtlebot3_node'),
             'param',
             TURTLEBOT3_MODEL + '.yaml'))
+
+    if LDS_MODEL == 'LDS-01':
+        lidar_pkg_dir = LaunchConfiguration(
+            'lidar_pkg_dir',
+            default=os.path.join(get_package_share_directory('hls_lfcd_lds_driver'), 'launch'))
+    elif LDS_MODEL == 'LDS-02':
+        lidar_pkg_dir = LaunchConfiguration(
+            'lidar_pkg_dir',
+            default=os.path.join(get_package_share_directory('ld08_driver'), 'launch'))
+        LDS_LAUNCH_FILE = '/ld08.launch.py'
+    else:
+        lidar_pkg_dir = LaunchConfiguration(
+            'lidar_pkg_dir',
+            default=os.path.join(get_package_share_directory('hls_lfcd_lds_driver'), 'launch'))
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
@@ -55,20 +76,18 @@ def generate_launch_description():
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                [ThisLaunchFileDir(), '/robot_state_publisher.launch.py']),
+                [ThisLaunchFileDir(), '/turtlebot3_state_publisher.launch.py']),
             launch_arguments={'use_sim_time': use_sim_time}.items(),
         ),
 
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                [ThisLaunchFileDir(), LDS_LAUNCH_FILE]),
+            PythonLaunchDescriptionSource([lidar_pkg_dir, LDS_LAUNCH_FILE]),
             launch_arguments={'port': '/dev/ttyUSB0', 'frame_id': 'base_scan'}.items(),
         ),
 
         Node(
             package='updated_turtlebot3_node',
             executable='updated_turtlebot3_ros',
-            namespace=ROBOT_NAMESPACE,  # <--- CHANGE THIS to your desired robot namespace
             parameters=[tb3_param_dir],
             arguments=['-i', usb_port],
             output='screen'),

@@ -30,5 +30,9 @@ default_ns:
       odometry:
         publish_tf: true
         use_imu: true
-        frame_id: "default_ns/odom"
+        frame_id: "world"
         child_frame_id: "default_ns/base_footprint"
+        initial_transform:
+          x: 0.0
+          y: 0.0
+          yaw: 0.0
