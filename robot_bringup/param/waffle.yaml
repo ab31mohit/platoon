@@ -1,5 +1,5 @@
 default_ns:
-  turtlebot3_node:
+  updated_turtlebot3_node:
     ros__parameters:
 
       opencr:
