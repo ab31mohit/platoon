@@ -33,7 +33,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
-
+#include <geometry_msgs/msg/point.hpp>
 namespace robotis
 {
 namespace turtlebot3
@@ -46,6 +46,7 @@ public:
     const double wheels_separation,
     const double wheels_radius);
   virtual ~Odometry() {}
+  std::array<double, 3> robot_pose_;  // added this line
 
 private:
   bool calculate_odometry(const rclcpp::Duration & duration);
@@ -59,6 +60,8 @@ private:
     const std::shared_ptr<sensor_msgs::msg::JointState const> & joint_state_msg,
     const std::shared_ptr<sensor_msgs::msg::Imu const> & imu_msg);
 
+  void pose_relocalization_callback(const geometry_msgs::msg::Point::SharedPtr point);
+
   void publish(const rclcpp::Time & now);
 
   std::shared_ptr<rclcpp::Node> nh_;
@@ -66,6 +69,7 @@ private:
 
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr pose_relocalization_state_sub_;
 
   std::shared_ptr<
     message_filters::Subscriber<sensor_msgs::msg::JointState>> msg_ftr_joint_state_sub_;
@@ -90,7 +94,7 @@ private:
   std::array<double, 2> diff_joint_positions_;
   double imu_angle_;
 
-  std::array<double, 3> robot_pose_;
+//  std::array<double, 3> robot_pose_;   //commented this line
   std::array<double, 3> robot_vel_;
 };
 }  // namespace turtlebot3

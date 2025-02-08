@@ -44,17 +44,6 @@ Odometry::Odometry(
   nh_->declare_parameter<double>("odometry.initial_transform.y", 0.0);  // Default: 0.0
   nh_->declare_parameter<double>("odometry.initial_transform.yaw", 0.0); // Default: 0.0
 
-  // Retrieve initial transform (pose of base_footprint wrt. odom) values from the parameter server
-  double initial_tf_x, initial_tf_y, initial_tf_yaw;
-  nh_->get_parameter_or<double>("odometry.initial_transform.x", initial_tf_x, 0.0);        // Read initial_x
-  nh_->get_parameter_or<double>("odometry.initial_transform.y", initial_tf_y, 0.0);        // Read initial_y
-  nh_->get_parameter_or<double>("odometry.initial_transform.yaw", initial_tf_yaw, 0.0);    // Read initial_yaw
-
-  // Initialize robot_pose_ with the specified initial transform
-  robot_pose_[0] = initial_tf_x;  // x
-  robot_pose_[1] = initial_tf_y;  // y
-  robot_pose_[2] = initial_tf_yaw;  // yaw (orientation)
-
   // ========================================================
   // Rest of the constructor (unchanged)
   // ========================================================
@@ -127,6 +116,12 @@ Odometry::Odometry(
       qos,
       std::bind(&Odometry::joint_state_callback, this, std::placeholders::_1));
   }
+
+  pose_relocalization_state_sub_ = nh_->create_subscription<geometry_msgs::msg::Point>(
+    "pose_relocalization",
+    qos,
+    std::bind(&Odometry::pose_relocalization_callback, this, std::placeholders::_1));
+
 }
 
 void Odometry::joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr joint_state_msg)
@@ -282,4 +277,24 @@ bool Odometry::calculate_odometry(const rclcpp::Duration & duration)
 
   last_theta = theta;
   return true;
+}
+
+void Odometry::pose_relocalization_callback(const geometry_msgs::msg::Point::SharedPtr point)
+{
+  // Fetch default values from parameters
+  double default_x, default_y, default_yaw;
+  nh_->get_parameter_or<double>("odometry.initial_transform.x", default_x, 0.0);
+  nh_->get_parameter_or<double>("odometry.initial_transform.y", default_y, 0.0);
+  nh_->get_parameter_or<double>("odometry.initial_transform.yaw", default_yaw, 0.0);
+
+  // Update robot pose using incoming message or defaults
+  robot_pose_[0] = std::isnan(point->x) ? default_x : point->x;
+  robot_pose_[1] = std::isnan(point->y) ? default_y : point->y;
+  robot_pose_[2] = std::isnan(point->z) ? default_yaw : point->z;
+
+  RCLCPP_INFO(
+    nh_->get_logger(),
+    "Robot pose initialized to : x=%f, y=%f, yaw=%f",
+    robot_pose_[0], robot_pose_[1], robot_pose_[2]);
+
 }
