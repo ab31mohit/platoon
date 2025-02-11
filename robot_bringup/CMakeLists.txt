@@ -10,6 +10,9 @@ find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -23,14 +26,20 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-# Find all Python files in the src directory
-file(GLOB PYTHON_SCRIPTS "src/*.py")
+# Add executables (and their dependencies) for all cpp based nodes
+add_executable(initial_pose_publisher_cpp src/initial_pose_publisher_cpp.cpp)
+ament_target_dependencies(initial_pose_publisher_cpp rclcpp geometry_msgs nav_msgs)
 
-# Install all Python scripts
+# Install all python nodes
 install(PROGRAMS
-  ${PYTHON_SCRIPTS}
+  src/update_ns_param.py
+  src/initial_pose_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
+# Install all cpp nodes
+install(TARGETS initial_pose_publisher_cpp DESTINATION lib/${PROJECT_NAME})
+
 
 install(DIRECTORY
   launch

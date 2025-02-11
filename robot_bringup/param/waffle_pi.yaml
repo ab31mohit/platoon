@@ -32,6 +32,11 @@ default_ns:
         use_imu: true
         frame_id: "default_ns/odom"
         child_frame_id: "default_ns/base_footprint"
+
+default_ns:
+  initial_pose_publisher:
+    ros__parameters:
+      odometry:
         initial_transform:
           x: 0.0
           y: 0.0

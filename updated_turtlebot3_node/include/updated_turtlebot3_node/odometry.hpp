@@ -46,7 +46,7 @@ public:
     const double wheels_separation,
     const double wheels_radius);
   virtual ~Odometry() {}
-  std::array<double, 3> robot_pose_;  // added this line
+  std::array<double, 3> robot_pose_;  // added this line to make robot_pose_ a public array
 
 private:
   bool calculate_odometry(const rclcpp::Duration & duration);
@@ -60,6 +60,7 @@ private:
     const std::shared_ptr<sensor_msgs::msg::JointState const> & joint_state_msg,
     const std::shared_ptr<sensor_msgs::msg::Imu const> & imu_msg);
 
+  // defining callback for pose_relocalization function
   void pose_relocalization_callback(const geometry_msgs::msg::Point::SharedPtr point);
 
   void publish(const rclcpp::Time & now);
@@ -69,6 +70,8 @@ private:
 
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
+
+  // defining subscriber for pose_relocalization
   rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr pose_relocalization_state_sub_;
 
   std::shared_ptr<

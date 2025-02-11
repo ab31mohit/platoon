@@ -36,17 +36,6 @@ Odometry::Odometry(
 {
   RCLCPP_INFO(nh_->get_logger(), "Init Odometry");
 
-  // ========================================================
-  // Add support for initial pose (x, y, yaw) from YAML file
-  // ========================================================
-  // Declare parameters for initial pose
-  nh_->declare_parameter<double>("odometry.initial_transform.x", 0.0);  // Default: 0.0
-  nh_->declare_parameter<double>("odometry.initial_transform.y", 0.0);  // Default: 0.0
-  nh_->declare_parameter<double>("odometry.initial_transform.yaw", 0.0); // Default: 0.0
-
-  // ========================================================
-  // Rest of the constructor (unchanged)
-  // ========================================================
   nh_->declare_parameter<std::string>("odometry.frame_id");
   nh_->declare_parameter<std::string>("odometry.child_frame_id");
 
@@ -281,20 +270,14 @@ bool Odometry::calculate_odometry(const rclcpp::Duration & duration)
 
 void Odometry::pose_relocalization_callback(const geometry_msgs::msg::Point::SharedPtr point)
 {
-  // Fetch default values from parameters
-  double default_x, default_y, default_yaw;
-  nh_->get_parameter_or<double>("odometry.initial_transform.x", default_x, 0.0);
-  nh_->get_parameter_or<double>("odometry.initial_transform.y", default_y, 0.0);
-  nh_->get_parameter_or<double>("odometry.initial_transform.yaw", default_yaw, 0.0);
-
   // Update robot pose using incoming message or defaults
-  robot_pose_[0] = std::isnan(point->x) ? default_x : point->x;
-  robot_pose_[1] = std::isnan(point->y) ? default_y : point->y;
-  robot_pose_[2] = std::isnan(point->z) ? default_yaw : point->z;
+  robot_pose_[0] = point->x;
+  robot_pose_[1] = point->y;
+  robot_pose_[2] = point->z;
 
-  RCLCPP_INFO(
+  /*RCLCPP_INFO(
     nh_->get_logger(),
     "Robot pose initialized to : x=%f, y=%f, yaw=%f",
-    robot_pose_[0], robot_pose_[1], robot_pose_[2]);
+    robot_pose_[0], robot_pose_[1], robot_pose_[2]);*/
 
 }

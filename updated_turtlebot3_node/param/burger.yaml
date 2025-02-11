@@ -32,7 +32,3 @@ diff_drive_controller:
       use_imu: true
       frame_id: "odom"
       child_frame_id: "base_footprint"
-      initial_transform:
-        x: 0.0
-        y: 0.0
-        yaw: 0.0
