@@ -1,4 +1,4 @@
-burger2:
+default_ns:
   updated_turtlebot3_node:
     ros__parameters:
 
@@ -23,7 +23,7 @@ burger2:
         ir: 0
         sonar: 0
 
-burger2:
+default_ns:
   diff_drive_controller:
     ros__parameters:
 
