@@ -23,7 +23,7 @@ using robotis::turtlebot3::TurtleBot3;
 using namespace std::chrono_literals;
 
 TurtleBot3::TurtleBot3(const std::string & usb_port)
-: Node("turtlebot3_node", rclcpp::NodeOptions().use_intra_process_comms(true))
+: Node("updated_turtlebot3_node", rclcpp::NodeOptions().use_intra_process_comms(true))
 {
   RCLCPP_INFO(get_logger(), "Init Updated TurtleBot3 Node Main");
   node_handle_ = std::shared_ptr<::rclcpp::Node>(this, [](::rclcpp::Node *) {});

@@ -128,6 +128,9 @@ Odometry::Odometry(
       qos,
       std::bind(&Odometry::joint_state_callback, this, std::placeholders::_1));
   }
+
+  RCLCPP_INFO(nh_->get_logger(), "Odometry initialized to x: %.2f, y: %.2f, yaw: %.2f", initial_tf_x, initial_tf_y, initial_tf_yaw);
+
 }
 
 void Odometry::joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr joint_state_msg)

@@ -1,4 +1,4 @@
-default_ns:
+/**:      # Node namespace
   updated_turtlebot3_node:
     ros__parameters:
 
@@ -23,7 +23,7 @@ default_ns:
         ir: 0
         sonar: 0
 
-default_ns:
+/**:     # Node namespace
   diff_drive_controller:
     ros__parameters:
 
