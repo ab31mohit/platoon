@@ -14,16 +14,16 @@ else:
     import termios
     import tty
 
-"""
-since the robots can be a combination of burger or waffles,
-we're setting the lowest combination of their vel limits 
-as the vel limits for teleoprating all of them together
-"""
-MAX_LIN_VEL = 0.22
-MAX_ANG_VEL = 1.82
+BURGER_MAX_LIN_VEL = 0.22
+BURGER_MAX_ANG_VEL = 2.84
+
+WAFFLE_MAX_LIN_VEL = 0.26
+WAFFLE_MAX_ANG_VEL = 1.82
 
 LIN_VEL_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.1
+
+TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
 
 msg = """
 Control Your TurtleBot3!
