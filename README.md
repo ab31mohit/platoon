@@ -28,15 +28,16 @@ This doc provides step by step process to setup this package & check the results
 - Install gazebo11-classic to simulate (in case you want to) your work & other turtlebot3 dependencies (necessary in all cases) :
 
   ```bash
-  sudo apt install gazebo
-  sudo apt install ros-humble-gazebo-*
-  sudo apt install ros-humble-cartographer
-  sudo apt install ros-humble-cartographer-ros
-  sudo apt install ros-humble-tf-transformations
-  sudo apt install ros-humble-tf2-tools
-  sudo apt install ros-humble-navigation2
-  sudo apt install ros-humble-nav2-bringup
-  sudo apt install ros-humble-dynamixel-sdk
+  sudo apt install gazebo -y
+  sudo apt install ros-humble-gazebo-* -y
+  sudo apt install ros-humble-cartographer -y
+  sudo apt install ros-humble-cartographer-ros -y
+  sudo apt install ros-humble-tf-transformations -y
+  sudo apt install ros-humble-tf2-tools -y
+  sudo apt install ros-humble-navigation2 -y
+  sudo apt install ros-humble-nav2-bringup -y
+  sudo apt install ros-humble-dynamixel-sdk -y
+  sudo apt install ros-humble-turtlebot3-gazebo -y
   ```
 
 <!-- Source your gazebo11 environment    
@@ -63,14 +64,16 @@ It should open the following window (I'm running it in WSL2)
 
   ```bash
   cd ~
-  mkdir -p btp_ws/src
-  cd btp_ws/src
-  git clone -b humble-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+  mkdir -p ~/btp_ws/src
+  cd ~/btp_ws/src
   git clone -b humble-devel https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git
-  git clone -b humble-devel https://github.com/ROBOTIS-GIT/turtlebot3.git
-  git clone https://github.com/ab31mohit/btp.git
+  git clone -b humble https://github.com/ROBOTIS-GIT/turtlebot3.git
+  cd ~/btp_ws/src/turtlebot3/
+  rm -rf turtlebot3_cartographer/ turtlebot3_navigation2/
+  cd ~/btp_ws/src/
+  git clone https://github.com/ab31mohit/platoon.git
   cd ~/btp_ws/
-  colcon build
+  colcon build --parallel-workers 1
   echo "source ~/btp_ws/install/setup.bash" >> ~/.bashrc
   ```    
 
@@ -111,14 +114,13 @@ It should open the following window (I'm running it in WSL2)
   echo "export TURTLEBOT3_NAMESPACE=default_ns" >> ~/.bashrc
   ```     
   ***Note:***   
-1. Here i'm using a default namespace *default_ns*.
-2. Make sure to change this namespace according to your robot.                                                              
+1. Make sure to change this namespace according to your robot.                                                              
 
-3. This namespace is used to connect to a specific robot (within the platoon) to access its topics.                         
+2. This namespace is used to connect to a specific robot (within the platoon) to access its topics.                         
 
-4. This namespace values are supposed to form a specific pattern which is TURTLEBOT3_MODEL_INSTANCE.                        
+3. This namespace values are supposed to form a specific pattern which is TURTLEBOT3_MODEL_INSTANCE.                        
 
-5. For instance, the first burger will have namespace as burger_1 & third waffle_pi will have waffle_pi_3 as its namespace. 
+4. For instance, the first burger will have namespace as burger1 & third waffle_pi will have wafflepi3 as its namespace. 
 
 ### 3. Configure ROS2 environment in your SBC (Robots' RPI) :    
 
@@ -150,7 +152,7 @@ Considering you have already configured setup as mentioned [here](https://gist.g
 - Clone this package in RPI :    
 
   ```bash
-  git clone https://github.com/ab31mohit/btp.git
+  git clone https://github.com/ab31mohit/platoon.git
   ```
 
 - Build the `turtlebot3_ws` in RPI : 
@@ -162,7 +164,7 @@ Considering you have already configured setup as mentioned [here](https://gist.g
 - Update the params in this package according to your robot namespace : 
 
   ```bash
-  cd ~/turtlebot3_ws/src/btp/robot_bringup/src/
+  cd ~/turtlebot3_ws/src/platoon/robot_bringup/src/
   python3 update_ns_param.py
   ```    
   It will take the robot namspace environment variable and use it to set params.     
