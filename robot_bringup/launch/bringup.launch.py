@@ -17,7 +17,7 @@ def generate_launch_description():
 
     try:
         if LDS_MODEL == 'LDS-02':
-            LDS_LAUNCH_FILE = '/robot_ld08.launch.py'
+            LDS_LAUNCH_FILE = '/ld08.launch.py'
     except:
         print('Please make sure you have correct LDS_MODEL (LDS-02)!')
 

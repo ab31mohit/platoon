@@ -31,14 +31,13 @@ Odometry::Odometry(
   wheels_separation_(wheels_separation),
   wheels_radius_(wheels_radius),
   use_imu_(false),
+  last_theta_initialized_(false),
   publish_tf_(false),
   imu_angle_(0.0f)
 {
   RCLCPP_INFO(nh_->get_logger(), "Init Odometry");
 
-  // ========================================================
-  // Add support for initial pose (x, y, yaw) from YAML file
-  // ========================================================
+  //---------------------------Edits------------ ---------------
   // Declare parameters for initial pose
   nh_->declare_parameter<double>("odometry.initial_transform.x", 0.0);  // Default: 0.0
   nh_->declare_parameter<double>("odometry.initial_transform.y", 0.0);  // Default: 0.0
@@ -55,9 +54,9 @@ Odometry::Odometry(
   robot_pose_[1] = initial_tf_y;  // y
   robot_pose_[2] = initial_tf_yaw;  // yaw (orientation)
 
-  // ========================================================
-  // Rest of the constructor (unchanged)
-  // ========================================================
+  //------------------------------------------------------------
+
+  // Rest of the constructor is unchanged
   nh_->declare_parameter<std::string>("odometry.frame_id");
   nh_->declare_parameter<std::string>("odometry.child_frame_id");
 
@@ -78,11 +77,13 @@ Odometry::Odometry(
     "odometry.frame_id",
     frame_id_of_odometry_,
     std::string("odom"));
+  if (frame_id_of_odometry_[0] == ('/')) {frame_id_of_odometry_.erase(0, 1);}
 
   nh_->get_parameter_or<std::string>(
     "odometry.child_frame_id",
     child_frame_id_of_odometry_,
     std::string("base_footprint"));
+  if (child_frame_id_of_odometry_[0] == ('/')) {child_frame_id_of_odometry_.erase(0, 1);}
 
   // Set up publishers, subscribers, and message filters
   auto qos = rclcpp::QoS(rclcpp::KeepLast(10));
@@ -104,7 +105,7 @@ Odometry::Odometry(
       nh_,
       "imu");
 
-    // Connect message filters to synchronizer
+    // connect message filters to synchronizer
     joint_state_imu_sync_->connectInput(*msg_ftr_joint_state_sub_, *msg_ftr_imu_sub_);
 
     joint_state_imu_sync_->setInterMessageLowerBound(
@@ -127,6 +128,9 @@ Odometry::Odometry(
       qos,
       std::bind(&Odometry::joint_state_callback, this, std::placeholders::_1));
   }
+
+  RCLCPP_INFO(nh_->get_logger(), "Odometry initialized to x: %.2f, y: %.2f, yaw: %.2f", initial_tf_x, initial_tf_y, initial_tf_yaw);
+
 }
 
 void Odometry::joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr joint_state_msg)
@@ -186,6 +190,21 @@ void Odometry::publish(const rclcpp::Time & now)
 
   odom_msg->twist.twist.linear.x = robot_vel_[0];
   odom_msg->twist.twist.angular.z = robot_vel_[2];
+
+  // TODO(Will Son): Find more accurate covariance.
+  // odom_msg->pose.covariance[0] = 0.05;
+  // odom_msg->pose.covariance[7] = 0.05;
+  // odom_msg->pose.covariance[14] = 1.0e-9;
+  // odom_msg->pose.covariance[21] = 1.0e-9;
+  // odom_msg->pose.covariance[28] = 1.0e-9;
+  // odom_msg->pose.covariance[35] = 0.0872665;
+
+  // odom_msg->twist.covariance[0] = 0.001;
+  // odom_msg->twist.covariance[7] = 1.0e-9;
+  // odom_msg->twist.covariance[14] = 1.0e-9;
+  // odom_msg->twist.covariance[21] = 1.0e-9;
+  // odom_msg->twist.covariance[28] = 1.0e-9;
+  // odom_msg->twist.covariance[35] = 0.001;
 
   geometry_msgs::msg::TransformStamped odom_tf;
 
@@ -258,8 +277,15 @@ bool Odometry::calculate_odometry(const rclcpp::Duration & duration)
   delta_s = wheels_radius_ * (wheel_r + wheel_l) / 2.0;
 
   if (use_imu_) {
-    theta = imu_angle_;
-    delta_theta = theta - last_theta;
+    if (last_theta_initialized_) {
+      theta = imu_angle_;
+      delta_theta = theta - last_theta;
+    } else {
+      theta = imu_angle_;
+      last_theta = imu_angle_;
+      delta_theta = theta - last_theta;
+      last_theta_initialized_ = true;
+    }
   } else {
     theta = wheels_radius_ * (wheel_r - wheel_l) / wheels_separation_;
     delta_theta = theta;

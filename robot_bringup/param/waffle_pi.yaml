@@ -1,4 +1,4 @@
-default_ns:
+default_ns:     # Node namespace
   updated_turtlebot3_node:
     ros__parameters:
 
@@ -23,14 +23,14 @@ default_ns:
         ir: 0
         sonar: 0
 
-default_ns:
+default_ns:     # Node namespace
   diff_drive_controller:
     ros__parameters:
 
       odometry:
         publish_tf: true
         use_imu: true
-        frame_id: "default_ns/odom"
+        frame_id: "world"
         child_frame_id: "default_ns/base_footprint"
         initial_transform:
           x: 0.0
