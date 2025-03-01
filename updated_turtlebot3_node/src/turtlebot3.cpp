@@ -23,7 +23,7 @@ using robotis::turtlebot3::TurtleBot3;
 using namespace std::chrono_literals;
 
 TurtleBot3::TurtleBot3(const std::string & usb_port)
-: Node("updated_turtlebot3_node", rclcpp::NodeOptions().use_intra_process_comms(true))
+: Node("turtlebot3_node", rclcpp::NodeOptions().use_intra_process_comms(true))
 {
   RCLCPP_INFO(get_logger(), "Init Updated TurtleBot3 Node Main");
   node_handle_ = std::shared_ptr<::rclcpp::Node>(this, [](::rclcpp::Node *) {});
@@ -197,7 +197,13 @@ void TurtleBot3::add_sensors()
       is_connected_ir,
       is_connected_sonar));
 
-  sensors_.push_back(new sensors::JointState(node_handle_, "joint_states", "base_link"));
+  dxl_sdk_wrapper_->read_data_set();
+  sensors_.push_back(
+    new sensors::JointState(
+      node_handle_,
+      dxl_sdk_wrapper_,
+      "joint_states",
+      "base_link"));
 }
 
 void TurtleBot3::add_devices()
