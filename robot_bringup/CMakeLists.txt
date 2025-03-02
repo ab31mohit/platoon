@@ -23,12 +23,9 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-# Find all Python files in the src directory
-file(GLOB PYTHON_SCRIPTS "src/*.py")
-
-# Install all Python scripts
+# Install all Python nodes
 install(PROGRAMS
-  ${PYTHON_SCRIPTS}
+  src/robot_trajectory_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

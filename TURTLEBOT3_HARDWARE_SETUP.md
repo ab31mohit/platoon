@@ -100,6 +100,12 @@ https://gist.github.com/user-attachments/assets/8d7ea105-5a24-42cd-ab8e-456c5f01
     ```bash
     ros2 launch turtlebot3_bringup robot.launch.py
     ```   
+    The log of this file should look like something like this  
+    <div align="left">
+    <img src="robot_bringup/media/burger_bringup/bringup_log.png" alt="Bringup log for burger" />
+    </div>   
+
+  Here, I'm running ***burger*** (TURTLEBOT3_MODEL)
 
 4. Open another tab of the terminal and run :    
 
@@ -107,6 +113,9 @@ https://gist.github.com/user-attachments/assets/8d7ea105-5a24-42cd-ab8e-456c5f01
     ros2 topic list
     ```    
     It should output topics similar to this   
+    <div align="left">
+    <img src="robot_bringup/media/burger_bringup/bringup_topics.png" alt="ROS2 topics during bringup for burger" />
+    </div>
 
 5. Run rviz to visualize the robot : 
 
