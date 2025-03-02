@@ -31,7 +31,7 @@ def generate_launch_description():
     tb3_param_dir = LaunchConfiguration(
         'tb3_param_dir',
         default=os.path.join(
-            get_package_share_directory('robot_bringup'),  # <--- CHANGE THIS to your desired bringup package name!
+            get_package_share_directory('robot_bringup'),
             'param',
             TURTLEBOT3_MODEL + '.yaml'))
 
@@ -65,11 +65,23 @@ def generate_launch_description():
             launch_arguments={'port': '/dev/ttyUSB0', 'frame_id': 'base_scan'}.items(),
         ),
 
+        # This node starts all the sensors and initializes odometry & diff drive controller
         Node(
             package='updated_turtlebot3_node',
             executable='updated_turtlebot3_ros',
-            namespace=ROBOT_NAMESPACE,  # <--- CHANGE THIS to your desired robot namespace
+            namespace=ROBOT_NAMESPACE,
             parameters=[tb3_param_dir],
             arguments=['-i', usb_port],
             output='screen'),
+
+        # This node publishes robot trajectory which can visualized in rviz
+        Node(
+            package='robot_bringup',
+            executable='robot_trajectory_node.py',
+            namespace=ROBOT_NAMESPACE,
+            remappings=[
+                ('robot_trajectory', f'/{ROBOT_NAMESPACE}/robot_trajectory'),
+                ('odom', f'/{ROBOT_NAMESPACE}/odom'),
+            ]
+        )
     ])
