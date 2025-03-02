@@ -153,6 +153,9 @@ Considering you have already configured your Hardware setup as mentioned [here](
   
   Also you don't need to run this on your remote pc, as the bringup file will be running from SBC and it will automatically set the namespaces according to what has been set in params.   
 
+- Add the custom transform within the [***burger.yaml***](/robot_bringup/param/burger.yaml) file.    
+  By default the initial transform between *world* and *default_ns/base_footprint* frame is [0, 0, 0].
+
 - Build the `turtlebot3_ws` in RPI : 
   
   ```bash
@@ -223,7 +226,7 @@ You will need to know the ip addresses of all those robots so that you can SSH i
   Now you can understand that we've only namespaced all the frames, nodes, topics that are related to a specific robot.    
   This will be used to differentiate robots and their data from other robots within the same ROS network.   
   The only frame that is common is the ***world*** which is basically the frame wrt. whiich the odometry of all the robots is getting initialized.      
-  The ***/tf*** & ***/tf_static*** topics contains the global transform data of all the namepspaced robots from the ***world*** frame.         
+  The ***/tf*** & ***/tf_static*** topics contains the global transform data of all the namespaced robots wrt. the ***world*** frame.         
   This is becase we need a global transform data which can keep track of transform of all the robots.   
   In the ***updated_turtlebot3_node*** package, the code to initialize odometry of a robot to a custom value has been implemented and the frame_id & custom transform has been utilized from [***params***](/robot_bringup/param/) folder.
 
