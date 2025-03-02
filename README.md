@@ -60,7 +60,7 @@ This doc provides step by step process to setup this package & check the results
   echo "source ~/btp_ws/install/setup.bash" >> ~/.bashrc
   ```    
 
-    Make sure all the above clones packages are built without any errors.       
+    Make sure all the above cloned packages are built without any errors.       
     
     In some cases you might face some warnings after building. Just rebuild the workspace again and they'll be gone.
 
@@ -97,14 +97,15 @@ This doc provides step by step process to setup this package & check the results
   echo "export TURTLEBOT3_NAMESPACE=default_ns" >> ~/.bashrc
   ```     
   ***Note:***   
-1. Here i'm using a default namespace *default_ns*.
-2. Make sure to change this namespace according to your robot.                                                              
+1. Here i'm using a default namespace ***default_ns***.
+2. Make sure to change this namespace according to your robot's name.                                                              
 
 3. This namespace is used to connect to a specific robot (within the platoon) to access its topics.                         
 
-4. This namespace values are supposed to form a specific pattern which is TURTLEBOT3_MODEL_INSTANCE.                        
+4. This namespace values are supposed to form a specific pattern which is `TURTLEBOT3_MODELInstance`.                        
 
-5. For instance, the first burger will have namespace as burger_1 & third waffle_pi will have waffle_pi_3 as its namespace. 
+5. For instance, the first burger will have namespace as burger1 & third waffle_pi will have waffle_pi3 as its namespace. 
+
 
 ### 3. Configure ROS2 environment in your SBC (Robots' RPI) :    
 
@@ -115,7 +116,7 @@ Considering you have already configured your Hardware setup as mentioned [here](
   ```bash
   ssh user_name@ip_address_rpi
   ```    
-  Change *user_name* and *ip_address_ip* to the username & ip_address of your SBC's RPI.
+  Change *user_name* and *ip_address_rpi* to the username & ip_address of your SBC's RPI.
 
 - Export the  ROS_DOMAIN_ID in RPI same as we did for remote PC :  
 
@@ -125,26 +126,19 @@ Considering you have already configured your Hardware setup as mentioned [here](
 - Export namespace for your robot in RPI :    
 
   ```bash
-  echo "export TURTLEBOT3_NAMESPACE=default_ns" >> ~/.bashrc
+  echo "export TURTLEBOT3_NAMESPACE=burger1" >> ~/.bashrc
   ```    
-  By defualt, the `default_ns` will be used.    
   
-  Make sure to change it according to your Robot's Model & Instance.    
+  Make sure to change this namespace according to your Robot's Model & Instance.    
   
   Pattern for writing namespaces have been specified above in this doc.
 
-- Clone this package in RPI :    
+- Clone this package in turtlebot3_ws within SBC's Rpi :    
 
   ```bash
   git clone https://github.com/ab31mohit/platoon.git
   ```
 
-- Build the `turtlebot3_ws` in RPI : 
-  
-  ```bash
-  cd ~/turtlebot3_ws/
-  colcon build
-  ```
 - Update the params in this package according to your robot namespace : 
 
   ```bash
@@ -157,14 +151,21 @@ Considering you have already configured your Hardware setup as mentioned [here](
   
   Do note that, runnniing this file is a one time process for setting up SBC(or RPI) of your robot.    
   
-  Although you don't need to run this on your remote pc, as the bringup file will be running from SBC and it will automatically set the namespaces according to what has been set in params.    
+  Also you don't need to run this on your remote pc, as the bringup file will be running from SBC and it will automatically set the namespaces according to what has been set in params.   
+
+- Build the `turtlebot3_ws` in RPI : 
+  
+  ```bash
+  cd ~/turtlebot3_ws/
+  colcon build --parallel-workers 1
+  ``` 
 
 
 ## Using the package 
 
 In this step you will bringup all the robots by connecting them to same network and also connect your remote PC to the same network.   
 
-You will need to know the ip addresses of all those robots so that you can SSH into them (for running their bringup nodes) from your Remote PC.     
+You will need to know the ip addresses of all those robots so that you can SSH into them (for running their bringup files) from your Remote PC.     
 
 ### 1. Run bringup launch file for all the robots from your remote PC :    
 
@@ -178,16 +179,17 @@ You will need to know the ip addresses of all those robots so that you can SSH i
 - Run bringup file for the robot via above SSH connection :  
 
   ```
-  ros2 launch robot_bringup robot_bringup.launch.py
+  ros2 launch robot_bringup bringup.launch.py
   ```   
+
   The log of this file should look like something like this  
 
     <div align="center">
-    <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_log.png" alt="Bringup log for burger2" />
+      <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_log.png" alt="Bringup log for burger2" />
     </div>   
 
   Here, I'm running ***burger*** (TURTLEBOT3_MODEL) with the namespace ***burger2*** (TURTLEBOT3_NAMESPACE).   
-  
+
 - Open a new tab in the remote PC & run : 
  
   ```
@@ -203,7 +205,7 @@ You will need to know the ip addresses of all those robots so that you can SSH i
     <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_topics.png" alt="ROS2 topics for burger2" />
     </div>   
 
-  Here all the topics of this robot are namespaced with ***burger2*** as i used this as the namespace for this robot except `/tf` and `/tf_static`.   
+  Here all the topics of this robot are namespaced with ***burger2*** as i used this as the namespace for this robot except ***/tf*** and ***/tf_static***.   
 
 - To understand the transforms that are being used in the background, run :  
   
@@ -218,14 +220,15 @@ You will need to know the ip addresses of all those robots so that you can SSH i
     <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_tf_frames.png" alt="Transform data for burger2" />
     </div> 
 
-  Now you can understand that we've only namespaced the frames ***odom*** and ***base_footprint*** of the robot in the global trannsform topics /tf & /tf_static without namespacing these global topics.     
+  Now you can understand that we've only namespaced all the frames, nodes, topics that are related to a specific robot.    
+  This will be used to differentiate robots and their data from other robots within the same ROS network.   
+  The only frame that is common is the ***world*** which is basically the frame wrt. whiich the odometry of all the robots is getting initialized.      
+  The ***/tf*** & ***/tf_static*** topics contains the global transform data of all the namepspaced robots from the ***world*** frame.         
   This is becase we need a global transform data which can keep track of transform of all the robots.   
-  My approach was to publish the transform data of all the robots onto global transform topics with namespaces and then there will one parent `world` frame whose child will be all the sub odoms of the robots.      
-  This `world` will be on that `odom` frame of one of the robots (that we'll choose as our Leader robot in the platoon).    
-  Just below you'll see that that i've namespaced all the nodes as well that are associated to the important topics of the robot (to differentiate them with that of others).     
+  In the ***updated_turtlebot3_node*** package, the code to initialize odometry of a robot to a custom value has been implemented and the frame_id & custom transform has been utilized from [***params***](/robot_bringup/param/) folder.
 
 - Understand flow of information using rqt_graph : 
-To understand what i just said above and visualize how the information is getting traversed between the nodes & topics within the ROS environment, we can use rqt_graph.    
+To understand what i said in my earlier discussion and visualize how the information is getting traversed between the nodes & topics within the ROS environment, we can use rqt_graph.    
 
 - Run this command to open rqt_graph : 
 
@@ -236,8 +239,9 @@ To understand what i just said above and visualize how the information is gettin
 
     <div align="center">
     <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_rqt.png" alt="Transform data for burger2" />
-    </div>  
-  It is clear that all the nodes and topics are namespaced except the */tf* and */tf_static* topics and i already gave the reason for that.   
+    </div>   
+    
+  It is clear that all the nodes and topics are namespaced except the ***/tf*** and ***/tf_static*** topics and i already gave the reason for that.   
   
 The reason why i included this so that one can really understand what am i trying to do and how to visualize those changes.     
 
