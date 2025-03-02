@@ -102,9 +102,9 @@ This doc provides step by step process to setup this package & check the results
 
 3. This namespace is used to connect to a specific robot (within the platoon) to access its topics.                         
 
-4. This namespace values are supposed to form a specific pattern which is `TURTLEBOT3_MODELInstance`.                        
+4. This namespace values are supposed to form a specific pattern which is `TURTLEBOT3MODELInstance`.                        
 
-5. For instance, the first burger will have namespace as burger1 & third waffle_pi will have waffle_pi3 as its namespace. 
+5. For instance, the first burger will have namespace as burger1 & third waffle_pi will have wafflepi3 as its namespace. 
 
 
 ### 3. Configure ROS2 environment in your SBC (Robots' RPI) :    
