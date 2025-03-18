@@ -91,7 +91,7 @@ def generate_launch_description():
                     output='screen'
                 )
             ]
-        )
+        ),
 
         # # cpp version : Pose Initialization Publisher Node with delay
         # TimerAction(
@@ -110,5 +110,16 @@ def generate_launch_description():
         #         )
         #     ]
         # )
+
+        # This node publishes robot trajectory which can visualized in rviz
+        Node(
+            package='robot_bringup',
+            executable='robot_trajectory_node.py',
+            namespace=ROBOT_NAMESPACE,
+            remappings=[
+                ('robot_trajectory', f'/{ROBOT_NAMESPACE}/robot_trajectory'),
+                ('odom', f'/{ROBOT_NAMESPACE}/odom'),
+            ]
+        )
 
     ])

@@ -1,0 +1,7 @@
+platoon_control1: 
+  leader: burger2
+  follower: burger3
+
+# platoon_control1: 
+#   leader: burger2
+#   follower: burger3
