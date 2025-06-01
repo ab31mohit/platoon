@@ -23,6 +23,7 @@ WAFFLE_MAX_ANG_VEL = 1.82
 LIN_VEL_STEP_SIZE = 0.01
 ANG_VEL_STEP_SIZE = 0.1
 
+# Get the robot model environment variable from system
 TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
 
 msg = """
@@ -108,6 +109,7 @@ def main():
         settings = termios.tcgetattr(sys.stdin)
 
     rclpy.init()
+
     ns = os.environ['TURTLEBOT3_NAMESPACE']
     node_name = ns + '_teleop_keyboard'
     topic_name = ns + '/cmd_vel'

@@ -19,6 +19,7 @@ install(DIRECTORY
 # Install all Python scripts
 install(PROGRAMS
   src/formation_control_node.py
+  src/lane_changing.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

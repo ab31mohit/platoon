@@ -11,15 +11,14 @@ from geometry_msgs.msg import PoseStamped
 class TrajectoryNode(Node):
     def __init__(self):
 
-        # robot_namespace = os.environ['TURTLEBOT3_NAMESPACE']
         super().__init__('robot_trajectory_node')
         
-        # Use fully qualified names for topics
+        # initialize publisher and subscriber objects for path
         self.path_pub = self.create_publisher(Path, 'robot_trajectory', 10)
         self.odom_sub = self.create_subscription(Odometry, 'odom', self.odom_callback, 10)
         
         self.path = Path()
-        self.path.header.frame_id = 'world'
+        self.path.header.frame_id = 'world'   # the trajectory is calculated wrt. odom
 
     def odom_callback(self, msg):
         pose = PoseStamped()

@@ -8,8 +8,10 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
+
+    # Get environment values from the system
     TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
-    ROBOT_NAMESPACE = os.environ.get('TURTLEBOT3_NAMESPACE', 'default_ns')  # Default to 'default_ns' namespace if not set
+    ROBOT_NAMESPACE = os.environ.get('TURTLEBOT3_NAMESPACE', 'default_ns')  # namespace for the robot
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     urdf_file_name = 'turtlebot3_' + TURTLEBOT3_MODEL + '.urdf'

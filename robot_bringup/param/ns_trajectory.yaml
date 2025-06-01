@@ -1,0 +1,13 @@
+robots:
+  - name: "wafflepi1"
+    namespace: "wafflepi1"
+    odom_topic: "/wafflepi1/odom"
+    trajectory_topic: "/wafflepi1/trajectory"
+  - name: "burger2"
+    namespace: "burger2"
+    odom_topic: "/burger2/odom"
+    trajectory_topic: "/burger2/trajectory"
+  # - name: "robot3"
+  #   namespace: "robot3"
+  #   odom_topic: "/robot3/odom"
+  #   trajectory_topic: "/robot3/trajectory"

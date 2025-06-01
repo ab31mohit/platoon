@@ -2,6 +2,6 @@ platoon_control1:
   leader: wafflepi1
   follower: burger2
 
-# platoon_control1: 
+# platoon_control2: 
 #   leader: burger2
 #   follower: burger3

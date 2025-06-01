@@ -11,9 +11,11 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
-    LDS_MODEL = os.environ['LDS_MODEL']
-    ROBOT_NAMESPACE = os.environ.get('TURTLEBOT3_NAMESPACE', 'default_ns')  # Default to 'default_ns' if not set
+
+    # Get the environment values from the system
+    TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']     # burger or waffle_pi
+    LDS_MODEL = os.environ['LDS_MODEL']                   # LDS-01 or LDS-02
+    ROBOT_NAMESPACE = os.environ.get('TURTLEBOT3_NAMESPACE', 'default_ns')  # name for your robot
 
     try:
         if LDS_MODEL == 'LDS-02':
@@ -67,21 +69,21 @@ def generate_launch_description():
 
         # This node starts all the sensors and initializes odometry & diff drive controller
         Node(
-            package='updated_turtlebot3_node',
+            package='updated_turtlebot3_node',    # an updated version which allows us to initialize odometry
             executable='updated_turtlebot3_ros',
-            namespace=ROBOT_NAMESPACE,
+            namespace=ROBOT_NAMESPACE,      # <--- CHANGE THIS to your desired robot namespace
             parameters=[tb3_param_dir],
             arguments=['-i', usb_port],
             output='screen'),
 
-        # This node publishes robot trajectory which can visualized in rviz
-        Node(
-            package='robot_bringup',
-            executable='robot_trajectory_node.py',
-            namespace=ROBOT_NAMESPACE,
-            remappings=[
-                ('robot_trajectory', f'/{ROBOT_NAMESPACE}/robot_trajectory'),
-                ('odom', f'/{ROBOT_NAMESPACE}/odom'),
-            ]
-        )
+        # # This node publishes robot trajectory which can visualized in rviz
+        # Node(
+        #     package='robot_bringup',
+        #     executable='robot_trajectory_node.py',
+        #     namespace=ROBOT_NAMESPACE,
+        #     remappings=[
+        #         ('robot_trajectory', f'/{ROBOT_NAMESPACE}/robot_trajectory'),
+        #         ('odom', f'/{ROBOT_NAMESPACE}/odom'),
+        #     ]
+        # )
     ])
