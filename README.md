@@ -362,6 +362,7 @@
     python3 lane_changing.py
     ```    
 
+<!-- 
 ## Results    
 
   The video results for different scenarios are as follows :      
@@ -378,6 +379,34 @@
       - the other 2 robots were running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file and the [platoon_control.yaml](platoon_control/params/platoon_control.yaml) file specified the leader-follower sets.     
 
   3. [Platoon control with 2 robots and dynamic obstacle](https://drive.google.com/file/d/1nnj8WbNjm0aAW5XdpUUlXpR5N-95k62B/view?usp=sharing) :    
+
+      - in this case, leader was given some goal and it was running the [lane_changing.py](platoon_control/src/lane_changing.py) node.
+      - the follower robot was running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file which was triggering the [lane_changing.py](platoon_control/src/lane_changing.py) node upon dynamic obstacle detection. 
+ -->
+
+## Results    
+
+  The video results for different scenarios are as follows :      
+
+
+  1. ***Platoon control for a single set of leader follower*** :    
+
+      https://github.com/user-attachments/assets/6869dedf-8055-48f2-9438-9c7f2276f6e0     
+
+
+      - in this case, the leader was teleoperated from the keyboard using [teleop_keyboard.py](robot_teleop/src/teleop_keyboard.py) node.  
+      - the follower was running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file.     
+
+  2. ***Platoon control with three robots and a static obstacle*** :    
+
+      https://github.com/user-attachments/assets/f6b6f02d-6fed-4532-8af5-18c2949dbc56
+
+      - in this case, the leader was given some goal and it was running the [lane_changing.py](platoon_control/src/lane_changing.py) node.    
+      - the other 2 robots were running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file and the [platoon_control.yaml](platoon_control/params/platoon_control.yaml) file specified the leader-follower sets.     
+
+  3. ***Platoon control with 2 robots and dynamic obstacle*** :    
+
+      https://github.com/user-attachments/assets/01851d4f-7867-4873-9504-d4c33c15d56f
 
       - in this case, leader was given some goal and it was running the [lane_changing.py](platoon_control/src/lane_changing.py) node.
       - the follower robot was running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file which was triggering the [lane_changing.py](platoon_control/src/lane_changing.py) node upon dynamic obstacle detection. 
