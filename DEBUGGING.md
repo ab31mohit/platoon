@@ -13,7 +13,7 @@ This file contains instructions to understand and debug the setup.
   The content of that file will be like this    
 
     <div align="center">
-    <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_tf_frames.png" alt="Transform data for burger2" />
+    <img src="media/ns_burger_bringup/ns_bringup_tf_frames.png" alt="Transform data for burger2" />
     </div> 
 
   - Now you can understand that we've only namespaced all the frames, nodes, topics that are related to a specific robot.    
@@ -43,7 +43,7 @@ This file contains instructions to understand and debug the setup.
   Refresh the rqt_window and select specific checkpoints and it will look something like this    
 
     <div align="center">
-    <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_rqt.png" alt="Transform data for burger2" />
+    <img src="media/ns_burger_bringup/ns_bringup_rqt.png" alt="Transform data for burger2" />
     </div>   
     
   It is clear that all the nodes and topics are namespaced except the ***/tf*** and ***/tf_static*** topics and i already gave the reason for that.   

@@ -6,9 +6,9 @@
 
 - This doc provides step by step process to setup this package & implement the results on the turtlebot3 hardware (also compatible with simulation).   
 
-- This package implements platoon architecture using namespaces bringup files (to uniqely identify robots in the same ros2 environment).    
+- This package implements platoon architecture using namespaced bringup files (to uniquely identify robots in the same ros2 environment).    
 
-- The platoon control is implemented using the leader-follower trajectory control.     
+- The platoon control is implemented using the leader-follower trajectory control approach.     
 
 - Static and dynamic obstacle avoidance is tested for simple environment by considering it as a lane changing problem for the current vehicle (robot).   
 
@@ -48,19 +48,19 @@
 │   │   ├── ld08.launch.py
 │   │   └── robot_state_publisher.launch.py
 │   ├── package.xml
-│   ├── param                         # file to namespace nodes & start position    
+│   ├── param                          # file to namespace nodes & start position    
 │   │   ├── burger.yaml
 │   │   ├── waffle_pi.yaml
 │   │   └── waffle.yaml
 │   └── src
 │       ├── robot_trajectory_node.py
-│       └── update_ns_param.py        # file to replace dummy namespace in param folder
-├── robot_teleop                      # package to teleoperate a robot 
+│       └── update_ns_param.py         # file to replace dummy namespace in param folder
+├── robot_teleop                       # package to teleoperate a robot 
 │   ├── CMakeLists.txt
 │   ├── package.xml
 │   └── src
-│       └── teleop_keyboard.py        # teleoperation node
-└── updated_turtlebot3_node           # turtlebot3_node package with updates to initialize custom odometry
+│       └── teleop_keyboard.py         # teleoperation node
+└── updated_turtlebot3_node            # turtlebot3_node package with updates to initialize custom odometry
     ├── CMakeLists.txt
     ├── include
     │   └── updated_turtlebot3_node

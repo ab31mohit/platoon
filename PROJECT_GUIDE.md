@@ -38,19 +38,19 @@
     │   │   ├── ld08.launch.py
     │   │   └── robot_state_publisher.launch.py
     │   ├── package.xml
-    │   ├── param                         # file to namespace nodes & start position    
+    │   ├── param                          # file to namespace nodes & start position    
     │   │   ├── burger.yaml
     │   │   ├── waffle_pi.yaml
     │   │   └── waffle.yaml
     │   └── src
     │       ├── robot_trajectory_node.py
-    │       └── update_ns_param.py        # file to replace dummy namespace in param folder
-    ├── robot_teleop                      # package to teleoperate a robot 
+    │       └── update_ns_param.py         # file to replace dummy namespace in param folder
+    ├── robot_teleop                       # package to teleoperate a robot 
     │   ├── CMakeLists.txt
     │   ├── package.xml
     │   └── src
-    │       └── teleop_keyboard.py        # teleoperation node
-    └── updated_turtlebot3_node           # turtlebot3_node package with updates to initialize custom odometry
+    │       └── teleop_keyboard.py         # teleoperation node
+    └── updated_turtlebot3_node            # turtlebot3_node package with updates to initialize custom odometry
         ├── CMakeLists.txt
         ├── include
         │   └── updated_turtlebot3_node
@@ -282,7 +282,7 @@
                 - The followiing images shows how the lane change and rotation is triggered :      
 
                     <div align="left">
-                    <img src="robot_bringup/media/platoon/lane_change.png" alt="fig12" />
+                    <img src="media/platoon/lane_change.png" alt="fig12" />
                     </div>     
 
                 - If the lidar data senses some object within the *d_thresh* distance in eiher os its left or right portions, it trigger lane change.    

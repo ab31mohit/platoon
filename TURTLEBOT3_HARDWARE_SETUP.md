@@ -103,7 +103,7 @@ This file includes step by step process to setup and run Turtlebot3 hardware.
     ```   
     The log of this file should look like something like this  
     <div align="left">
-    <img src="robot_bringup/media/burger_bringup/bringup_log.png" alt="Bringup log for burger" />
+    <img src="media/burger_bringup/bringup_log.png" alt="Bringup log for burger" />
     </div>   
 
   Here, I'm running ***burger*** (TURTLEBOT3_MODEL)
@@ -115,7 +115,7 @@ This file includes step by step process to setup and run Turtlebot3 hardware.
     ```    
     It should output topics similar to this   
     <div align="left">
-    <img src="robot_bringup/media/burger_bringup/bringup_topics.png" alt="ROS2 topics during bringup for burger" />
+    <img src="media/burger_bringup/bringup_topics.png" alt="ROS2 topics during bringup for burger" />
     </div>
 
 5. Run rviz to visualize the robot : 
