@@ -26,7 +26,6 @@ endif()
 # Install all Python nodes
 install(PROGRAMS
   src/robot_trajectory_node.py
-  src/ns_robot_trajectory_node.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
