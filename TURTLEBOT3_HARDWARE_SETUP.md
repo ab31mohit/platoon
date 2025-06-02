@@ -17,8 +17,8 @@ This file includes step by step process to setup and run Turtlebot3 hardware.
 
 - *Here is a video demonstration for this :*    
 
-    [SBC_Setup_demo.mp4](https://drive.google.com/file/d/1APajjn3yPWVeY9pewfT6jtobTyrJtlHj/view?usp=sharing)   
-    <!-- https://github.com/user-attachments/assets/aabee5ae-4cd4-4645-8156-1a2466d2b0cf -->
+    <!-- [SBC_Setup_demo.mp4](https://drive.google.com/file/d/1APajjn3yPWVeY9pewfT6jtobTyrJtlHj/view?usp=sharing)    -->
+    https://github.com/user-attachments/assets/aabee5ae-4cd4-4645-8156-1a2466d2b0cf
 
 *`Note1:`* You can install RPI Imager on either windows or Ubuntu, steps will be the same. I would prefer saving the credentials of a local mobile hostspot in case you don't have a local wifi Router.      
 (Note1: ends here)
