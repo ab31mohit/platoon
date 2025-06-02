@@ -92,7 +92,7 @@ This file includes step by step process to setup and run Turtlebot3 hardware.
 
 ## Bringup Test :
 
-1. Make sure both your `Remote PC` & `Turtlebot3 Rpi` are connected to same wifi network.   
+1. Make sure both your `Remote PC` & `Turtlebot3 Rpi` are connected to the same wifi network.   
 
 2. SSH into your RPI from your Remote PC's ubuntu-22 terminal.   
 

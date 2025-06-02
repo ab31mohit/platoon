@@ -141,7 +141,7 @@
     
     In some cases you might face some warnings after building. Just rebuild the workspace again and they'll be gone.    
 
-    Also try to build the packages using the command `colcon build --parallel-workers 1` to build them one by one.     
+    Also try to build the packages always using the command `colcon build --parallel-workers 1` to build them one by one.     
 
 
 ### 2. Configure ROS2 environment in your remote PC :

@@ -254,7 +254,7 @@
         - This is the package where the platoon control and goal navigation with obstacle avoidance is implemented.    
         - The [*launch*](platoon_control/launch/) folder contains [*platoon_control.launch.py*](platoon_control/launch/platoon_control.launch.py) file.     
 
-            - This launch runs multiple *leader-follower trajectory control* nodes by using the parameters for a set of leader-follower robots.     
+            - This launch file runs multiple *leader-follower trajectory control* nodes by using the parameters for a set of leader-follower robots.     
             - This set of leader-follower is defined in the [*platoon_control.yaml*](platoon_control/params/platoon_control.yaml) file.     
             - The node to implement leader-follower trajectory control is defined in [*formation_control_node.py*](platoon_control/src/formation_control_node.py) file.     
 
@@ -286,7 +286,7 @@
                     </div>     
 
                 - If the lidar data senses some object within the *d_thresh* distance in eiher os its left or right portions, it trigger lane change.    
-                - The rotation of the robot is calculated by converting the lane width deviation to the angular terms which basically allows the robot to determie the angular error to shift to the next lane.    
+                - The rotation of the robot is calculated by converting the lane width deviation to the angular terms which basically allows the robot to determine the angular error to shift to the next lane.    
                 - The lane width determines how far the robot will be wrt obstacle while overtaking it.   
                 - Here it is assumed tha the obstacle will always be smaller in width wrt. the lane width.  
                 - All these lanes are imaginary, used just to show how the obstacle is avioded.     

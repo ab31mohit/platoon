@@ -53,9 +53,7 @@ This file contains instructions to understand and debug the setup.
 ## Side Note :    
 
 - The reason why i included this so that one can really understand what am i trying to do and how to visualize those changes.     
-
-- I hope you could understand this and can make changes accordingly if you want some.  
-
+ 
 - Now you need to repeat this process for all the robot's you're going to run simulataneously.     
 
 - To publish any data like velocity or subscribe any data like imu, odom or scan make sure you are using the namespaced topic name of that specific robot.
