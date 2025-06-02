@@ -20,50 +20,64 @@
 
 
 ## Repository Structure    
+
 ```bash 
-├── DEBUGGING.md
-├── LICENSE
-├── platoon                                   # Meta package for containing other sub packages
+├── DEBUGGING.md                       # debug instructions          
+├── LICENSE                            # license information
+├── PROJECT_GUIDE.md                   # complete project understanding
+├── README.md                          # main guide to setup & implement project
+├── TURTLEBOT3_HARDWARE_SETUP.md       # turtlebot3 hardware setup guide
+├── media/                             # pictures/plots used as contents
+├── platoon                            # meta package for containing other sub packages
 │   ├── CMakeLists.txt
 │   └── package.xml
-├── platoon_control                           # Package to implement platoon control
+├── platoon_control                    # package to implement platoon control
+│   ├── CMakeLists.txt
 │   ├── launch
-│   │   └── platoon_control.launch.py         # Run leader-follower trajectory control for specified robots
-│   ├── params
-│   │   └── platoon_control.yaml              # Specify robots in the platoon
-│   └── src
-│       ├── formation_control_node.py         # Node to implement platoon control for a set of leader and follower robots
-│       └── lane_changing.py                  # Node to implement goal navigation with obstacle avoidance
-├── README.md                        
-├── robot_bringup                             # Package to run the robots with namespaced platoon architecture
-│   ├── launch
-│   │   ├── bringup.launch.py                 # Main bringup file to run the robot
-│   │   ├── ld08.launch.py   
-│   │   └── robot_state_publisher.launch.py
-│   ├── media                                 # Directory containing the data
+│   │   └── platoon_control.launch.py  # run platoon control nodes for all the robots
 │   ├── package.xml
-│   ├── param                                 # Directory to initialize robot during bringup with namespaced topics
+│   ├── params
+│   │   └── platoon_control.yaml       # specify platoon structure
+│   └── src
+│       ├── formation_control_node.py  # platoon control node
+│       └── lane_changing.py           # goal navigation node
+├── robot_bringup                      # package to bringup robots with namespaces
+│   ├── CMakeLists.txt
+│   ├── launch
+│   │   ├── bringup.launch.py          # Main bringup file to run the robot
+│   │   ├── ld08.launch.py
+│   │   └── robot_state_publisher.launch.py
+│   ├── package.xml
+│   ├── param                         # file to namespace nodes & start position    
 │   │   ├── burger.yaml
 │   │   ├── waffle_pi.yaml
 │   │   └── waffle.yaml
 │   └── src
 │       ├── robot_trajectory_node.py
-│       └── update_ns_param.py                 # Python file to update the contents of param folder using the provided namespace
-├── robot_teleop                               # Package to teleoperate a robot         
+│       └── update_ns_param.py        # file to replace dummy namespace in param folder
+├── robot_teleop                      # package to teleoperate a robot 
+│   ├── CMakeLists.txt
+│   ├── package.xml
 │   └── src
-│       └── teleop_keyboard.py                 # Teleoperation node
-├── TURTLEBOT3_HARDWARE_SETUP.md               
-└── updated_turtlebot3_node                    # turtlebot3_node package with changes to implement custom odometry initialization
-    │       ├── devices
-    │       ├── odometry.hpp                   # Header file for specifying odom initialization functions and others
-    │       ├── sensors
+│       └── teleop_keyboard.py        # teleoperation node
+└── updated_turtlebot3_node           # turtlebot3_node package with updates to initialize custom odometry
+    ├── CMakeLists.txt
+    ├── include
+    │   └── updated_turtlebot3_node
+    │       ├── devices/
+    │       ├── odometry.hpp
+    │       ├── sensors/
     │       └── turtlebot3.hpp
     ├── package.xml
     ├── param
+    │   ├── burger.yaml
+    │   ├── waffle_pi.yaml
+    │   └── waffle.yaml
     └── src
-        ├── devices
-        ├── odometry.cpp                       # cpp file for implementing odom initialization
-        ├── sensors
+        ├── devices/
+        ├── node_main.cpp              # main executable node of this package
+        ├── odometry.cpp               # file to initialie and update odometry
+        ├── sensors/
         └── turtlebot3.cpp
 ```
 
@@ -271,7 +285,7 @@
   The log of this file should look like something like this  
 
     <div align="center">
-      <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_log.png" alt="Bringup log for burger2" />
+      <img src="media/ns_burger_bringup/ns_bringup_log.png" alt="Bringup log for burger2" />
     </div>   
 
   Here, I'm running ***burger*** (TURTLEBOT3_MODEL) with the namespace ***burger2*** (TURTLEBOT3_NAMESPACE).   
@@ -288,7 +302,7 @@
   It will show the topics something like this :    
 
     <div align="left">
-    <img src="robot_bringup/media/ns_burger_bringup/ns_bringup_topics.png" alt="ROS2 topics for burger2" />
+    <img src="media/ns_burger_bringup/ns_bringup_topics.png" alt="ROS2 topics for burger2" />
     </div>   
 
   Here all the topics of this robot are namespaced with ***burger2*** as i used this as the namespace for this robot except ***/tf*** and ***/tf_static***.     
@@ -298,10 +312,28 @@
   After running all the robots together, the environment should look like this :     
 
   <!-- Testing platoon bringup -->
-  |                          Hardware                            |                         Rviz                          |
+  <!-- |                          Hardware                            |                         Rviz                          |
   |--------------------------------------------------------------|-------------------------------------------------------|
-  |![fig1](/robot_bringup/media/platoon/platoon_hardware.png)    |![fig2](/robot_bringup/media/platoon/platoon_rviz.png) |
+  |![fig1](/media/platoon/platoon_hardware.png)    |![fig2](/media/platoon/platoon_rviz.png) | -->
 
+    <table>
+        <thead>
+            <tr>
+            <th style="text-align:center;">   Hardware bringup  </th>
+            <th style="text-align:center;">Rviz data</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+            <td style="text-align:center;">
+                <img src="media/platoon/platoon_hardware.png" alt="fig1" />
+            </td>
+            <td style="text-align:center;">
+                <img src="media/platoon/platoon_rviz.png" alt="fig2" />
+            </td>
+            </tr>
+        </tbody>
+    </table>
 
 ### 2. Run the platoon control module :    
 
@@ -328,8 +360,30 @@
     ```bash   
     cd ~/btp_ws/src/platoon/platoon_control/src/   
     python3 lane_changing.py
-    ```
+    ```    
 
-## Extra notes     
+## Results    
+
+  The video results for different scenarios are as follows :      
+
+
+  1. [Platoon control for a single set of leader follower](https://drive.google.com/file/d/17kOYZ_MorR6m7O9nQKXy5yPtRre6W99N/view?usp=sharing) :     
+
+      - in this case, the leader was teleoperated from the keyboard using [teleop_keyboard.py](robot_teleop/src/teleop_keyboard.py) node.  
+      - the follower was running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file.     
+
+  2. [Platoon control with three robots and a static obstacle](https://drive.google.com/file/d/1sQWRfjM5dRVhDmP_qC5Lvjde848lwWqA/view?usp=sharing) :    
+
+      - in this case, the leader was given some goal and it was running the [lane_changing.py](platoon_control/src/lane_changing.py) node.    
+      - the other 2 robots were running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file and the [platoon_control.yaml](platoon_control/params/platoon_control.yaml) file specified the leader-follower sets.     
+
+  3. [Platoon control with 2 robots and dynamic obstacle](https://drive.google.com/file/d/1nnj8WbNjm0aAW5XdpUUlXpR5N-95k62B/view?usp=sharing) :    
+
+      - in this case, leader was given some goal and it was running the [lane_changing.py](platoon_control/src/lane_changing.py) node.
+      - the follower robot was running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file which was triggering the [lane_changing.py](platoon_control/src/lane_changing.py) node upon dynamic obstacle detection. 
+
+
+## Extra Notes     
 
 - Use the [DEBUGGING.md](/DEBUGGING.md) file to understand and debug the files.      
+- Use the [PROJECT_GUIDE.md](/PROJECT_GUIDE.md) file to understand the entire Project structure and how every file is working.
