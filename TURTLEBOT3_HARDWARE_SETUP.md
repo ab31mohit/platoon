@@ -1,11 +1,19 @@
 # Turtlebot3 Hardware setup   
-This file includes step by step process to setup and run Turtlebot3 hardware.
+
+- This file includes step by step process to setup and run Turtlebot3 hardware.    
+- I would suggest to follow these steps in the same order to save time :    
+
+    1. ***SBC setup*** --> Setup RPI board of the robot (install Ubuntu os and ROS2)    
+    2. ***OpenCR firmware update***  --> Dynamixel firmware update and test
+    3. ***Turtlebot3 assembly***  --> Assemble all the parts completely     
+    4. ***Remote PC setup*** --> Setup Ubuntu-22 LTS Dekstop on remote pc along with ROS2-humble
 
 ## SBC Setup :   
+
 - From the Turtlebot3 kit you would've got a RaspberryPi 4 (Model B or higher) where you will install the minimal Operating System onto the SD Card (provided in the kit) to run the base code for operating the Robot :    
     - In our case the minimal OS is the `Ubuntu-22.04.05 LTS Server (64-bit)`    
     - We need to Flash & install this OS onto RaspberryPi.    
-- Download RPI imager for flash this OS onto Rpi - [RPI image download](https://www.raspberrypi.com/software/).
+- Download RPI imager in your remote pc to flash this OS onto Rpi - [RPI image download](https://www.raspberrypi.com/software/).
 - Connect SD Card to your current system.
 - Open RPI Image software and select the following :   
 
@@ -27,9 +35,9 @@ This file includes step by step process to setup and run Turtlebot3 hardware.
 
     ![image](media/sbc_setup3.png)
     
-   - Login with the username and password that you earlier set in the RPI Image software.     
-   - Make sure the network (whose credentials you set earlier in the RPI Image software) is already ON.
-   - Check if you are connected to a network or not by checking IP Address of you Rpi   
+   - Login with the username and password that you've set earlier in the RPI Image software.     
+   - Make sure the network is already ON.
+   - Check if you are connected to a network or not by checking IP Address of your SBC's Rpi   
     
    ```bash
    hostname -I
@@ -90,6 +98,29 @@ This file includes step by step process to setup and run Turtlebot3 hardware.
   Here i'm uring burger, in your case it might be a `waffle` or `waffle_pi`.
 
 
+## OPENCR firmware update :     
+
+In this section, you will test the dynamixels with the latest firmware update.      
+Follow these steps one by one.   
+
+- Connect the 2 dynamixels with the repsective wheels.     
+- Connect both of those dynamixels to the opencr board.    
+- connect opencr board to the SBC (RPI).    
+- power the entire system from the battery.     
+- Now install the firmware int he SBC of the robot from [*ROBOTIS-EManual-Guide*](https://emanual.robotis.com/docs/en/platform/turtlebot3/opencr_setup/#opencr-setup).      
+- if the test is successful, move to the next step.       
+
+## Turtlebot3 assembly :    
+
+Use the manual you got from the turtlebot3 box to assemble the robot.    
+
+In case you don't have the manual, use the [*ROBOTIS-EManual-Guide*](https://emanual.robotis.com/docs/en/platform/turtlebot3/hardware_setup/#hardware-assembly).       
+
+Before running the bringup test, make sure your remote pc is configured already.     
+
+Follow [*README.md*](README.md) file to setup remote pc.
+
+
 ## Bringup Test :
 
 1. Make sure both your `Remote PC` & `Turtlebot3 Rpi` are connected to the same wifi network.   
@@ -128,7 +159,8 @@ This file includes step by step process to setup and run Turtlebot3 hardware.
 
     ```bash
     ros2 run turtlebot3_teleop teleop_keyboard
-    ```   
+    ```    
+
 
 ## References   
 

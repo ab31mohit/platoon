@@ -16,7 +16,7 @@
 
   1. **SBC** --> The raspberrypi board on turtlebot3 hardware with installed ubuntu-22 server OS and ROS2 Humble.    
 
-  2. **Remote PC** --> Your laptop of PC from where you will be running robots (via SSH) and running scripts.
+  2. **Remote PC** --> Your laptop or PC from where you will be running robots (via SSH) and running scripts.
 
 
 ## Repository Structure    
@@ -48,14 +48,14 @@
 │   │   ├── ld08.launch.py
 │   │   └── robot_state_publisher.launch.py
 │   ├── package.xml
-│   ├── param                          # file to namespace nodes & start position    
+│   ├── param                          # namespacing nodes and specifying start position    
 │   │   ├── burger.yaml
 │   │   ├── waffle_pi.yaml
 │   │   └── waffle.yaml
 │   └── src
 │       ├── robot_trajectory_node.py
 │       └── update_ns_param.py         # file to replace dummy namespace in param folder
-├── robot_teleop                       # package to teleoperate a robot 
+├── robot_teleop                       # package to teleoperate the robot 
 │   ├── CMakeLists.txt
 │   ├── package.xml
 │   └── src
@@ -75,8 +75,8 @@
     │   └── waffle.yaml
     └── src
         ├── devices/
-        ├── node_main.cpp              # main executable node of this package
-        ├── odometry.cpp               # file to initialie and update odometry
+        ├── node_main.cpp              # main executable node of updated_turtlebot3_node pkg
+        ├── odometry.cpp               # file to initialize and update odometry
         ├── sensors/
         └── turtlebot3.cpp
 ```
@@ -101,7 +101,7 @@
   sudo apt update && sudo apt upgrade -y
   ```
 
-- Make sure you have already setup the [`Turtlebot3 hardware & software`](/TURTLEBOT3_HARDWARE_SETUP.md) before going further.
+<!-- - Make sure you have already setup the [`Turtlebot3 hardware & software`](/TURTLEBOT3_HARDWARE_SETUP.md) before going further. -->
 
 - Install gazebo11-classic to simulate (in case you want to) your work & other turtlebot3 dependencies (necessary in all cases) :
 
@@ -158,7 +158,7 @@
   ```bash
   echo "export ROS_DOMAIN_ID=13"
   ```
-  I'm using `13` as my ros domain id. You can use anything between 0 and 255.    
+  I'm using `13` as my ros domain id. You can use anything between 0 and 232.    
   
   But make sure it is same for the SBC's of all the robots and your remote pc.
 
@@ -168,7 +168,7 @@
   echo "export TURTLEBOT3_MODEL=burger" >> ~/.bashrc
   ```
 
-  Make sure to change the model, according to the hardware you are using. (like burger or waffle_pi)
+  Make sure to change the model according to the hardware you are using. (like burger or waffle_pi)
 
 - Export the TURTLEBOT3_NAMESPACE in your remote pc
 
@@ -184,7 +184,7 @@
 
     - This namespace is used to connect to a specific robot (within the platooned ros2 environment) to access its topics/data.                         
 
-    - For my work, i've used a specific pattern for thee namespaces which is ***TURTLEBOT3MODELInstance***.                        
+    - For my work, i've used a specific pattern for these namespaces which is ***TURTLEBOT3MODELInstance***.                        
 
     - For instance, the first burger will have namespace as *burger1* & third waffle_pi will have *wafflepi3* as its namespace to identify them easily in the platoon environment.  
 
@@ -193,7 +193,7 @@
 
   Considering you have already configured your Hardware setup as mentioned [here](/TURTLEBOT3_HARDWARE_SETUP.md), follow the below steps to setup this project.    
 
-- SSH into the Robot's RPI from your Ubuntu-22 terminal by connecting both to same local network :
+- SSH into the Robot's RPI from your Ubuntu-22 terminal by connecting both to the same local network :
 
   ```bash
   ssh user_name@ip_address_rpi
@@ -205,12 +205,12 @@
     - I would suggest you to use some tools such as termux or other to determine ip address of the SBC of your robot
       so that you don't need to connect your SBC to some monitor for its IP Address.
 
-- Export the  ROS_DOMAIN_ID in RPI: (should be same for both, remote pc and SBC)
+- Export the  ROS_DOMAIN_ID in SBC : (should be same for both, remote pc and SBC)
 
   ```bash
   echo "export ROS_DOMAIN_ID=13" >> ~/.bashrc
   ```
-- Export namespace for your robot in RPI :    
+- Export namespace for your robot in SBC :    
 
   ```bash
   echo "export TURTLEBOT3_NAMESPACE=burger1" >> ~/.bashrc
@@ -220,7 +220,7 @@
   
   Pattern for writing namespaces have been specified above in this doc.
 
-- Clone this package in turtlebot3_ws in SBC of your robot :    
+- Clone this github package inside turtlebot3_ws in the SBC of your robot :    
 
   ```bash    
   cd ~/turtlebot3_ws/src
@@ -238,18 +238,18 @@
 
   Obvioulsy it will change this file only if your robot model is burger as it also takes the robot model environment variable as input and changes that corresponding param file accordingly.
   
-  This will ensure all the important topics of this robot are initiaised with a certain namespace (that you've set before).
+  This will ensure all the important topics of this robot are initialized with a certain namespace (that you've set before).
   
   Do note that, running this file is a one time process for setting up SBC of your robot.    
   
-  Also you don't need to run this on your remote pc, as the bringup file will be running from SBC and it will automatically set the namespaces according to what has been set in params.   
+  Also you don't need to run this on your remote pc, as the bringup file will be running from SBC and it will automatically set the namespaces according to the data of [*param*](robot_bringup/param/) folder.   
 
 
 - Set initial pose of the robot :    
 
-  You can initialize the odometry/pose of the robot by changing [*burger.yaml*](/robot_bringup/param/burger.yaml) file.      
+  You can initialize the odometry/pose of the robot by changing [*burger.yaml*](/robot_bringup/param/burger.yaml) file (considering your robot model is *burger*).      
     
-  By default the initial transform between *world* and *default_ns/base_footprint* frame is [0, 0, 0] which is the starting value of odometry by default.     
+  By default the initial transform between *world* and *default_ns/base_footprint* frame is [0, 0, 0] which is the starting value of odometry. 
 
   For platoon initialization, you will need to initialize all the robots at different positions in the same ros2 environment, so you can do that through this file.    
 
@@ -297,7 +297,7 @@
   ```   
   If you're following everything correctly, it will show the topics started by bringup launch file of this robot in your remote PC.    
   
-  The reason for this because of the same network and ROS_DOMAIN_ID between your remote PC and Robot's RPI.   
+  The reason for this is because of the same network and ROS_DOMAIN_ID between your remote PC and Robot's RPI.   
   
   It will show the topics something like this :    
 
@@ -305,7 +305,9 @@
     <img src="media/ns_burger_bringup/ns_bringup_topics.png" alt="ROS2 topics for burger2" />
     </div>   
 
-  Here all the topics of this robot are namespaced with ***burger2*** as i used this as the namespace for this robot except ***/tf*** and ***/tf_static***.     
+  Here all the topics of this robot are namespaced with ***burger2*** as i used that as the namespace for this robot except ***/tf*** and ***/tf_static***.       
+
+  The transformation data on ***/tf*** & ***/tf_static*** topics is not namespaced for each robot, instead it contains the complete frame transformation data between all the robots (when run together).
 
   Now do the same bringup operation for all the robots.    
 
@@ -343,7 +345,7 @@
 
   - The information of these pairs of leader-follower robots is specified within the [platoon_control.yaml](/platoon_control/params/platoon_control.yaml) file.   
 
-  - Depending on the position of robots in your linea platoon, change the robot names accordingly in the [platoon_control.yaml](/platoon_control/params/platoon_control.yaml) file.    
+  - Depending on the position of robots in your linear platoon, change the robot names accordingly in the [platoon_control.yaml](/platoon_control/params/platoon_control.yaml) file.    
 
   - Run the launch file for platoon control    
 
@@ -351,19 +353,20 @@
     ros2 launch platoon_control platoon_control.launch.py
     ```       
 
-  - This will initialize the relative distance between robots by usinig the current position of robots in the platoon and try to maintain that when of them moves forward.       
+  - This will initialize the relative distance between robots by using the current position of robots in the platoon and will try to maintain that when one of them moves forward.       
 
 ### 3. Run the goal node :   
 
-  - Run the python node to move the first robot in the platoon (leader) to the goal while avoiding obstacles    
+  - Run the goal navigation node to move the first robot in the platoon (leader) to the goal while avoiding obstacles    
 
     ```bash   
     cd ~/btp_ws/src/platoon/platoon_control/src/   
     python3 lane_changing.py
     ```    
+    
+    - Make sure you have changed variables such as goal (x, y) and lane_width in the *lane_changing.py* node.
 
-<!-- 
-## Results    
+<!-- ## Results    
 
   The video results for different scenarios are as follows :      
 
@@ -378,11 +381,11 @@
       - in this case, the leader was given some goal and it was running the [lane_changing.py](platoon_control/src/lane_changing.py) node.    
       - the other 2 robots were running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file and the [platoon_control.yaml](platoon_control/params/platoon_control.yaml) file specified the leader-follower sets.     
 
-  3. [Platoon control with 2 robots and dynamic obstacle](https://drive.google.com/file/d/1nnj8WbNjm0aAW5XdpUUlXpR5N-95k62B/view?usp=sharing) :    
+  3. [Platoon control with 2 robots and a dynamic obstacle](https://drive.google.com/file/d/1nnj8WbNjm0aAW5XdpUUlXpR5N-95k62B/view?usp=sharing) :    
 
       - in this case, leader was given some goal and it was running the [lane_changing.py](platoon_control/src/lane_changing.py) node.
-      - the follower robot was running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file which was triggering the [lane_changing.py](platoon_control/src/lane_changing.py) node upon dynamic obstacle detection. 
- -->
+      - the follower robot was running the [platoon_control.launch.py](platoon_control/launch/platoon_control.launch.py) file which was triggering the [lane_changing.py](platoon_control/src/lane_changing.py) node upon dynamic obstacle detection.  -->
+
 
 ## Results    
 

@@ -4,7 +4,7 @@
    
     - The project focuses on implementing platoon control for multi vehicle systems arranged in a linear manner where every robot follows the robot exaclty in front of it and the very first robot in the platoon does the decision making to avoid obctacles and reaching to the goal.     
     - This project uses Turtlebot3 hardware (burger and waffle_pi) robots along with ROS2-Humble software stack on Ubuntu-22 OS.       
-    - The guide to setup this project has been provided in the README file.     
+    - The guide to setup this project has been provided in the [*README*](README.md) file.     
     - This document will mainly focus on how the things are working and what files are involved for a particular task.      
 
 # Project Structure     
@@ -38,14 +38,14 @@
     │   │   ├── ld08.launch.py
     │   │   └── robot_state_publisher.launch.py
     │   ├── package.xml
-    │   ├── param                          # file to namespace nodes & start position    
+    │   ├── param                          # namespacing nodes and specifying start position    
     │   │   ├── burger.yaml
     │   │   ├── waffle_pi.yaml
     │   │   └── waffle.yaml
     │   └── src
     │       ├── robot_trajectory_node.py
     │       └── update_ns_param.py         # file to replace dummy namespace in param folder
-    ├── robot_teleop                       # package to teleoperate a robot 
+    ├── robot_teleop                       # package to teleoperate the robot 
     │   ├── CMakeLists.txt
     │   ├── package.xml
     │   └── src
@@ -65,11 +65,11 @@
         │   └── waffle.yaml
         └── src
             ├── devices/
-            ├── node_main.cpp              # main executable node of this package
-            ├── odometry.cpp               # file to initialie and update odometry
+            ├── node_main.cpp              # main executable node of updated_turtlebot3_node pkg
+            ├── odometry.cpp               # file to initialize and update odometry
             ├── sensors/
             └── turtlebot3.cpp
-    ```    
+    ```   
 
 - The main ROS2 packages that are doing the work are as follows :    
 
@@ -91,8 +91,8 @@
 
             3. [*robot_state_publisher.launch.py*](robot_bringup/launch/robot_state_publisher.launch.py)     
 
-                - This launch files used the urdf data of the robot to publish the transforms between all the frames attached to different parts/sensors of the robot.     
-                - The file replaces default frame names to the namespaced frame names to identify each robot with it's namespace.       
+                - This launch file uses the urdf data of the robot to publish the transforms between all the frames attached to different parts/sensors of the robot.     
+                - The file replaces default frame names to the namespaced frame names to identify each robot in the ROS2 environment.       
 
         - The [*src*](robot_bringup/src/) folder contains 2 important files    
 
@@ -104,11 +104,11 @@
 
             2. [*update_ns_param.py*](robot_bringup/src/update_ns_param.py)     
 
-                - I made this python file to automate the process of editing the yaml files in [*param*](robot_bringup/param/) folder to replace dummy namespace tp to the actual namespace within the SBC of the robot.    
-                - This is a one time process to include correct namespace int he yaml file, which later on it used in the [*bringup.launch.py*](robot_bringup/launch/bringup.launch.py) file.     
+                - I made this python file to automate the process of editing the yaml files in [*param*](robot_bringup/param/) folder to replace dummy namespace to to the actual namespace within the SBC of the robot.    
+                - This is a one time process to include correct namespace in the yaml file, which is used in the [*bringup.launch.py*](robot_bringup/launch/bringup.launch.py) file.     
 
         - Rest of the files such as *package.xml*, *CMakeLists.txt* are common for all ros2 packages.       
-        - To visualize the how this namespacing helped us in this project and wh was it important, you can look as these images    
+        - To visualize how this namespacing helped us in this project and why was it important, you can look as these images    
 
             1. The tf-tree data after bringup of *burger2* robot :   
 
@@ -131,7 +131,7 @@
                     </tbody>
                 </table>      
 
-            2. The rostopic data after bringup of *burger2* robot :    
+            2. The ROS topics after bringup of *burger2* robot :    
 
                 <table>
                     <thead>
@@ -174,7 +174,7 @@
                 </table>       
 
 
-        - Now after running three robots together (for a 3 robot linear platoon), the ros2 structure looks like this      
+        - Now after running three robots together (for a 3 robot linear platoon), the ros2 structure looked like this      
 
             1. Tf tree after platoon bringup :    
 
@@ -194,7 +194,7 @@
                 <img src="media/multi_burger_bringup/multi_bringup_topics.png" alt="fig9" />
                 </div>     
 
-        - The platoon lookout for both hardware and its corresponding rviz data looks like this       
+        - The platoon lookout for both hardware and its corresponding rviz data looked like this       
 
             <table>
                 <thead>
@@ -215,13 +215,13 @@
                 </tbody>
             </table>      
 
-        - Now one can easily understand why namepacing was important how does the ros2 data reflects these changes.     
-        - Namespacing allows use to uniquely identify and extract or send informtion to the robot without worrying about others.     
+        - Now one can easily understand why namepacing was important and how does the ros2 data reflects these changes.     
+        - Namespacing allows us to uniquely identify and extract/send information to/from the robot without worrying about others.     
 
     
     2. [***updated_turtlebot3_node***](updated_turtlebot3_node/) :    
 
-        - This package is an updated version of the robotis's [*turtlebot3_node*](https://github.com/ROBOTIS-GIT/turtlebot3/tree/main/turtlebot3_node) package.    
+        - This package is an updated version of the robotis's  existing [*turtlebot3_node*](https://github.com/ROBOTIS-GIT/turtlebot3/tree/main/turtlebot3_node) package.    
 
         - All the files are updated to include the correct file names (begin with `updated`).    
 
@@ -237,7 +237,7 @@
 
     3. [***robot_teleop***](robot_teleop/) :    
 
-        - This package is used to simply teleoperate a particular robot.    
+        - This package is used to simply teleoperate the robot.    
         - The teleopertion node is named as [*teleop_keyboard.py*](robot_teleop/src/teleop_keyboard.py) present in the [*src*](robot_teleop/src/) folder.    
         - The [*teleop_keyboard.py*](robot_teleop/src/teleop_keyboard.py) node requires two environment variables    
 
@@ -262,34 +262,34 @@
 
             1. [*formation_control_node.py*](platoon_control/src/formation_control_node.py)     
 
-                - This node uses 2 launch parameters for specifying names of leader and follower robots.     
+                - This node uses 2 launch parameters for specifying names of the leader and follower robots.     
                 - 2 separate controls are running in this node for the follower to follow the exact trajectory of its leader.    
                 - One is a PD based *trajectory control* that ensures that the follower moves along the exact same trajectory of its leader.    
-                - Second is a PID based *relative distance control* that ensures that the follower always mains the same distance (that was present during the start of platoon control) along the trajectory curce of leader.    
-                - Final motion commands are send to the follower as a fraction of about two control inputs with 40% weight for trajectory control and 60% weight for relative distance control.     
-                - The trajectory of the leader are saved in a queue as its position and yaw.    
-                - As the leader moves its position and yaw are saved in the queue and the follower robot takes the oldest element in the queue as its goal (to reach) and as it reaches that goal, that oldest elements is popped out from the queue.    
+                - Second is a PID based *relative distance control* that ensures that the follower always maintains the same distance (that was present during the start of platoon control) along the trajectory curve of leader.    
+                - Final motion commands are send to the follower as a fraction of above two control inputs with 40% weight for trajectory control and 60% weight for relative distance control.     
+                - The trajectory of the leader is saved in a queue as its position and yaw.    
+                - As the leader moves its position and yaw are appended in the queue and the follower robot takes the oldest element in the queue as its goal (to reach) and as it reaches that goal, that oldest elements is popped out from the queue.    
                 - So in this way the elements are added in the queue (as the leader moves) and the older elements are popped out as the follower reaches that position within some threshold.    
 
             2. [*lane_changing.py*](platoon_control/src/lane_changing.py)    
 
                 - This file implement the goal navigation and obstacle avoidance for a single robot (the leader of the platoon).    
-                - The goal navigation is pretty simple which is implemented by calculating the error in the position and orientation of the robot from the goal and feeding it as an input.     
+                - The goal navigation is pretty simple which is implemented by calculating the error in the position and orientation of the robot from the goal and feeding it as an error input.     
                 - For obstacle avoidance, the lidar data is used.     
                 - The lidar data is divided into 2 parts (left view and right view).    
                 - The obstacle avoidance is treated as a lane changing problem where the current robot is assumed to be moving in the centre lane.   
                 - depending upon the extent of obstacle in the current lane, it decides whether to move in the left lane or the right lane.      
-                - The followiing images shows how the lane change and rotation is triggered :      
+                - The following image shows how the lane change and rotation is triggered :      
 
                     <div align="left">
                     <img src="media/platoon/lane_change.png" alt="fig12" />
                     </div>     
 
-                - If the lidar data senses some object within the *d_thresh* distance in eiher os its left or right portions, it trigger lane change.    
+                - If the lidar data senses some object within the *d_thresh* distance in eiher of its left or right portions, it triggers lane change.    
                 - The rotation of the robot is calculated by converting the lane width deviation to the angular terms which basically allows the robot to determine the angular error to shift to the next lane.    
-                - The lane width determines how far the robot will be wrt obstacle while overtaking it.   
+                - The lane width determines how far the robot will be wrt. obstacle while overtaking it.   
                 - Here it is assumed tha the obstacle will always be smaller in width wrt. the lane width.  
-                - All these lanes are imaginary, used just to show how the obstacle is avioded.     
+                - All these lanes are imaginary, used just to show how the obstacle is avoided.     
                 - So basically this file takes goal position *(x, y)* as input and moves the robot to that position while avoiding obstacles in between.   
                 - Since all the follower robots are following their leaders and the first leader is avoiding obstacles while moving to the goal, this ensures the entire platoon avoids obstacle while reaching to the goal.    
                 - In case of moving obstacles, all the robots run independently (without platoon control).     
